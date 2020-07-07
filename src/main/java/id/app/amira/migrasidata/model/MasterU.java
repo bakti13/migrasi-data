@@ -4,10 +4,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(name = "t_masteru")
@@ -55,6 +53,7 @@ public class MasterU {
     @Setter
     @Getter
     @Column(name = "tgl_perlh")
+    @Temporal(TemporalType.DATE)
     private Date tglPerlh;
 
     @Id
@@ -73,6 +72,7 @@ public class MasterU {
     @Setter
     @Getter
     @Column(name = "tgl_buku")
+    @Temporal(TemporalType.DATE)
     private Date tglBuku;
 
     @Id
@@ -157,6 +157,7 @@ public class MasterU {
     @Setter
     @Getter
     @Column(name = "tgl_dsr_mts")
+    @Temporal(TemporalType.DATE)
     private Date tglDsrMts;
 
     @Id
@@ -238,6 +239,4 @@ public class MasterU {
     @Getter
     @Column(name = "no_aset2")
     private String noAset2;
-
-
 }

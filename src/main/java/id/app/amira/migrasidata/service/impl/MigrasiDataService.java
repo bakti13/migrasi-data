@@ -7,10 +7,14 @@ import id.app.amira.migrasidata.service.IMigrasiDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MigrasiDataService implements IMigrasiDataService {
+
+    private final static int LENGTH = 500;
+
     @Autowired
     ISimkeuRepository simkeuRepository;
 
@@ -35,12 +39,26 @@ public class MigrasiDataService implements IMigrasiDataService {
     }
 
     @Override
-    public void migrasiData(List<MasterU> data, String parameter) {
+    public void migrasiData(String parameter) {
 
-        for (MasterU d: data) {
-            System.out.println(d.toString());
-            amiraRepository.save(d);
+//        long count = simkeuRepository.countByParameter(parameter);
+        int start = 0;
+
+        for (int i = 0; i < 1; i++) {
+            if (i > 0) {
+                start = (i * LENGTH) + 1;
+            }
+            List<MasterU> item = simkeuRepository.getDataByParameter(start, LENGTH, parameter);
+//            System.out.println("size item? "+item.size());
+            for (int j = 0; j < item.size(); j++) {
+                System.out.println("loop ke-"+ j);
+                amiraRepository.save(item.get(j));
+            }
+//            amiraRepository.saveAll(item);
         }
-//        return 0;
+    }
+
+    private int updateAmira(MasterU data) {
+        return 0;
     }
 }

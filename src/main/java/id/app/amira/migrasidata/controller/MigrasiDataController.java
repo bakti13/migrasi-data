@@ -2,7 +2,6 @@ package id.app.amira.migrasidata.controller;
 
 import id.app.amira.migrasidata.model.MasterU;
 import id.app.amira.migrasidata.service.IMigrasiDataService;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,28 +33,29 @@ public class MigrasiDataController {
 //        return simkeuDao.selectTopFiveDataSimkeu();
     }
 
-    @GetMapping(value="/views")
+    @GetMapping(value = "/views")
     public ModelAndView showCities() {
 
         List<MasterU> master = service.selecAllDataSimkeu();
-        List<MasterU>  amira = service.selecAllDataAmira();
+        List<MasterU> amira = service.selecAllDataAmira();
 
-        Map<String,Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("masters", master);
         params.put("aMasters", amira);
 
         return new ModelAndView("views/views2", params);
     }
 
-    @GetMapping(value="{migrasi}")
+    @GetMapping(value = "/migrasi")
     public ModelAndView migrasiData() {
 
-        List<MasterU>  master = service.selecAllDataSimkeu();
-        service.migrasiData(master,"test");
-        List<MasterU>  amira = service.selecAllDataAmira();
+//        List<MasterU>  master = service.selecAllDataSimkeu();
+        service.migrasiData("2010");
 
-        Map<String,Object> params = new HashMap<String, Object>();
-        params.put("masters", master);
+        List<MasterU> amira = service.selecAllDataAmira();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("masters", new ArrayList<MasterU>());
         params.put("aMasters", amira);
 
         return new ModelAndView("views/views2", params);

@@ -25,15 +25,16 @@
         <th>lokasi</th>
         <th>No Sppa</th>
     </tr>
-
-    <#list masters as master>
-        <tr>
-            <td>${master.thnAng}</td>
-            <td>${master.periode}</td>
-            <td>${master.kdLokasi}</td>
-            <td>${master.noSppa}</td>
-        </tr>
-    </#list>
+    <#if masters?size != 0>
+        <#list masters as master>
+            <tr>
+                <td>${master.thnAng}</td>
+                <td>${master.periode}</td>
+                <td>${master.kdLokasi}</td>
+                <td>${master.noSppa}</td>
+            </tr>
+        </#list>
+    </#if>
 </table>
 
 <table>

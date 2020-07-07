@@ -9,5 +9,5 @@ public interface IMigrasiDataService {
     List<MasterU> selecAllDataSimkeu();
     List<MasterU> selecAllDataAmira();
     List<MasterU> selectDataByParameter();
-    void migrasiData(List<MasterU> data, String parameter);
+    void migrasiData(String parameter);
 }
