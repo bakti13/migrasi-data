@@ -1,63 +1,65 @@
 package id.app.amira.migrasidata.controller;
 
-import id.app.amira.migrasidata.model.MasterU;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import id.app.amira.migrasidata.model.DatatablesResponse;
 import id.app.amira.migrasidata.service.IMigrasiDataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class MigrasiDataController {
     @Autowired
     IMigrasiDataService service;
 
-    @GetMapping(value = {"/", "/index"})
-    public String index(Model model) {
-        model.addAttribute("title", "Hello World!!");
+    @RequestMapping(value = {"/", "/index"})
+    public String index() {
         return "index";
     }
 
-    @RequestMapping(value = {"/api/simkeu"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<MasterU> getTopFiveDataSimkeu() {
-        return service.selecAllDataSimkeu();
-//        return simkeuDao.selectTopFiveDataSimkeu();
+    @RequestMapping(value = {"/api/simkeu/all-datatable"}, method = RequestMethod.POST, produces = "application/json")
+    public void getTopFiveDataSimkeu(
+            @RequestParam("draw") int draw,
+            @RequestParam("start") int start,
+            @RequestParam("length") int length,
+            @RequestParam(value = "search[value]", defaultValue = "") String search,
+            @RequestParam("thnAng") String thnAng,
+            HttpServletResponse response) {
+        DatatablesResponse datatablesResponse = service.getDataTable(draw, start, length, search, thnAng);
+        setJsonResponse(datatablesResponse, response);
     }
 
-    @GetMapping(value = "/views")
-    public ModelAndView showCities() {
-
-        List<MasterU> master = service.selecAllDataSimkeu();
-        List<MasterU> amira = service.selecAllDataAmira();
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("masters", master);
-        params.put("aMasters", amira);
-
-        return new ModelAndView("views/views2", params);
+    @RequestMapping(value = {"/api/simkeu/get-all-thn-ang"}, produces = "application/json")
+    public void selectTahunAnggaran(HttpServletResponse response) {
+        List<String> thnAng = service.selectTahunAnggaran();
+        setJsonResponse(thnAng, response);
     }
 
-    @GetMapping(value = "/migrasi")
-    public ModelAndView migrasiData() {
+    @RequestMapping(value = {"/api/simkeu/migrasi-data"}, method = RequestMethod.POST)
+    public void MigrasiData(@RequestParam("thnAng") String thnAng, HttpServletResponse response) {
+        service.migrasiData(thnAng);
+        setJsonResponse(0, response);
+    }
 
-//        List<MasterU>  master = service.selecAllDataSimkeu();
-        service.migrasiData("2010");
+    private void setJsonResponse(Object object, HttpServletResponse response) {
+        try {
+            PrintWriter out = response.getWriter();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonInString = mapper.writeValueAsString(object);
 
-        List<MasterU> amira = service.selecAllDataAmira();
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("masters", new ArrayList<MasterU>());
-        params.put("aMasters", amira);
-
-        return new ModelAndView("views/views2", params);
+            out.print(jsonInString);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

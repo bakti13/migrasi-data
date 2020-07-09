@@ -5,20 +5,22 @@ import id.app.amira.migrasidata.model.MasterU;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
 public interface ISimkeuRepository extends JpaRepository<MasterU, CompositeId> {
 
-    @Query(value = "SELECT * from t_masteru LIMIT 5 ", nativeQuery=true)
-    List<MasterU> getAllData();
-
-    @Query(value="SELECT * FROM t_masteru WHERE CASE WHEN :thn = '' THEN 1 = 1 ELSE thn_ang = :thn END LIMIT :start, :length",
-             nativeQuery=true)
-    List<MasterU> getDataByParameter(@Param("start") int start, @Param("length")int length,
+    @Query(value = "SELECT * FROM t_masteru WHERE IF(:thn = '', TRUE, thn_ang = :thn) LIMIT :start, :length",
+            nativeQuery = true)
+    List<MasterU> getDataByParameter(@Param("start") int start, @Param("length") int length,
                                      @Param("thn") String parameter);
 
+    @Query(value = "select distinct thn_ang from t_masteru order by thn_ang", nativeQuery = true)
+    List<String> getAllThnAng();
+
+    @Query(value = "SELECT count(*) FROM t_masteru WHERE IF(:thn = '', TRUE, thn_ang = :thn)",
+            nativeQuery = true)
+    int getTotalData(@Param("thn") String parameter);
 
 }
