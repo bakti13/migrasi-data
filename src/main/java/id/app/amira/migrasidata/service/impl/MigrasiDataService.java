@@ -22,14 +22,14 @@ public class MigrasiDataService implements IMigrasiDataService {
     IAmiraRepository amiraRepository;
 
     @Override
-    public void migrasiData(String parameter) {
+    public void migrasiData(String tahun, String lokasi) {
         int start = 0;
-        int total = simkeuRepository.getTotalData(parameter);
+        int total = simkeuRepository.getTotalData(tahun, lokasi);
         for (int i = 0; i < (total / LENGTH) + 1; i++) {
             if (i > 0) {
                 start = (i * LENGTH) + 1;
             }
-            List<MasterU> item = simkeuRepository.getDataByParameter(start, LENGTH, parameter);
+            List<MasterU> item = simkeuRepository.getDataByParameter(start, LENGTH, tahun, lokasi);
             for (MasterU master : item) {
                 amiraRepository.save(master);
             }
@@ -42,9 +42,14 @@ public class MigrasiDataService implements IMigrasiDataService {
     }
 
     @Override
-    public DatatablesResponse getDataTable(int draw, int start, int length, String search, String thnAng) {
-        List<MasterU> list = simkeuRepository.getDataByParameter(start, length, thnAng);
-        int total = simkeuRepository.getTotalData(thnAng);
+    public List<String> selectLokasi() {
+        return simkeuRepository.getAllLokasi();
+    }
+
+    @Override
+    public DatatablesResponse getDataTable(int draw, int start, int length, String search, String thnAng, String lokasi) {
+        List<MasterU> list = simkeuRepository.getDataByParameter(start, length, thnAng, lokasi);
+        int total = simkeuRepository.getTotalData(thnAng,lokasi);
         return DatatablesResponse.builder().draw(draw).data(list).recordsFiltered(total)
                 .recordsTotal(total).build();
     }

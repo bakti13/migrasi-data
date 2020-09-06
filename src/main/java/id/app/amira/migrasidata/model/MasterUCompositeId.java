@@ -3,7 +3,7 @@ package id.app.amira.migrasidata.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class CompositeId implements Serializable {
+public class MasterUCompositeId implements Serializable {
     private String thnAng;
 
     private String periode;

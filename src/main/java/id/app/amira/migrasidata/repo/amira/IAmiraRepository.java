@@ -1,16 +1,15 @@
 package id.app.amira.migrasidata.repo.amira;
 
-import id.app.amira.migrasidata.model.CompositeId;
+import id.app.amira.migrasidata.model.MasterUCompositeId;
 import id.app.amira.migrasidata.model.MasterU;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface IAmiraRepository extends JpaRepository<MasterU, CompositeId> {
+public interface IAmiraRepository extends JpaRepository<MasterU, MasterUCompositeId> {
     @Query(value = "SELECT * from t_masteru ", nativeQuery = true)
     List<MasterU> getAllData();
 

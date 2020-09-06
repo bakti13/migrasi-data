@@ -16,12 +16,17 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md">
-                    <label for="ThnAng" class="col-sm-2 col-form-label font-weight-bold">Tahun Anggaran:</label>
-                    <select class="custom-select col-sm-3" id="ThnAng"></select>
-                    <button id="btnMigrasiData" type="button" class="float-right btn btn-success"
-                            onclick="migrasiData()">
-                        Migrasi Data
-                    </button>
+                    <div class="row">
+                        <label for="ThnAng" class="col-sm-2 col-form-label font-weight-bold">Tahun Anggaran:</label>
+                        <select class="custom-select col-sm-3" id="ThnAng"></select>
+                        <label for="Lokasi" class="col-sm-2 col-form-label font-weight-bold">Lokasi:</label>
+                        <select class="custom-select col-sm-3" id="Lokasi"></select>
+                        <button id="Load" type="button" class="float-left btn btn-info" onclick="LoadData()">Load</button>
+                        <button id="btnMigrasiData" type="button" class="float-right btn btn-success"
+                                onclick="migrasiData()">
+                            Migrasi Data
+                        </button>
+                    </div>
                     <hr class="col-sm-12">
                 </div>
             </div>
@@ -31,15 +36,15 @@
                     <thead>
                     <tr class="bg-success text-white">
                         <th class="text-center">Tahun Anggaran</th>
-                        <th class="text-center">Periode</th>
-                        <th class="text-center">lokasi</th>
+<#--                        <th class="text-center">Periode</th>-->
+                        <th class="text-center">Lokasi</th>
                         <th class="text-center">No Sppa</th>
                         <th class="text-center">Kode Barang</th>
                         <th class="text-center">No Aset</th>
-                        <th class="text-center">Tanggal Perlh</th>
-                        <th class="text-center">Tercatat</th>
+                        <th class="text-center">Tanggal Perolehan</th>
+<#--                        <th class="text-center">Tercatat</th>-->
                         <th class="text-center">Kondisi</th>
-                        <th class="text-center">Tangal Buku</th>
+<#--                        <th class="text-center">Tangal Buku</th>
                         <th class="text-center">Jenis Trn</th>
                         <th class="text-center">Dsr Hrg</th>
                         <th class="text-center">Kode Data</th>
@@ -67,7 +72,7 @@
                         <th class="text-center">Versi</th>
                         <th class="text-center">KdPerKd</th>
                         <th class="text-center">KdPerKK</th>
-                        <th class="text-center">no Aset2</th>
+                        <th class="text-center">no Aset2</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -87,19 +92,59 @@
 
 <script>
 
-    let thnAng = "";
-    $.get("http://localhost:9999/api/simkeu/get-all-thn-ang", function (data) {
+    let thnAng = "-";
+    let lokasi = "-";
+    $.get("${baseUrl}simkeu/get-all-thn-ang", function (data) {
         let html = '<option value="">All</option>';
         for (let i = 0; i < data.length; i++) {
             html += '<option value=' + data[i] + '>' + data[i] + '</option>';
         }
+        // html += '<option value="all">All</option>';
         $('#ThnAng').html(html);
     });
 
-    $('#ThnAng').change(function () {
-        thnAng = $(this).val();
-        masterTable.ajax.reload();
+    $.get("${baseUrl}simkeu/get-all-lokasi", function (data) {
+        let html = '<option value="">All</option>';
+        for (let i = 0; i < data.length; i++) {
+            html += '<option value=' + data[i] + '>' + data[i] + '</option>';
+        }
+        // html += '<option value="all">All</option>';
+        $('#Lokasi').html(html);
     });
+
+    function LoadData() {
+        thnAng = $('#ThnAng').val();
+        console.log(thnAng);
+        lokasi = $('#Lokasi').val();
+        console.log(lokasi);
+        masterTable.ajax.reload();
+        // if (validation()) {
+        // }
+    }
+
+    function validation() {
+        let valid = true;
+        /*if(! $('#ThnAng').val() )
+        {
+            valid = false;
+            Swal.fire({
+                type: 'error',
+                title: 'Mandatori',
+                text: 'Tahun tidak boleh kosong'
+            })
+        }
+        if(! $('#Lokasi').val() )
+        {
+            valid = false;
+            Swal.fire({
+                type: 'error',
+                title: 'Mandatori',
+                text: 'Lokasi tidak boleh kosong'
+            })
+        }*/
+        return valid;
+    }
+
 
     function migrasiData() {
 
@@ -111,59 +156,59 @@
             buttonsStyling: true
         });
 
-        let text = "Apakah anda yakin akan migrasi data tahun anggaran " + thnAng + " ?";
-        if (thnAng === "") {
-            text = "Apakah anda yakin akan migrasi semua data tahun anggaran ?";
-        }
+        let text = "Apakah anda yakin ?";
 
-        swalWithBootstrapButtons.fire({
-            title: 'Migrasi Data',
-            text: text,
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Tidak, Kembali',
-        }).then((result) => {
-            if (result.value) {
-                Swal.fire({
-                    title: 'Proses migrasi data..',
-                    allowEscapeKey: false,
-                    allowOutsideClick: false,
-                    onOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-                $.ajax({
-                    url: "http://localhost:9999/api/simkeu/migrasi-data?thnAng=" + thnAng,
-                    type: "POST",
-                    contentType: "application/json",
-                    dataType: 'json'
-                }).done(function () {
-                    swalWithBootstrapButtons.fire({
-                        type: 'success',
-                        title: 'Migrasi Data',
-                        text: 'Migrasi Data Berhasil'
-                    });
-                    location.reload();
-                }).fail(function () {
+        if (validation()) {
+            swalWithBootstrapButtons.fire({
+                title: 'Migrasi Data',
+                text: text,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak, Kembali',
+            }).then((result) => {
+                if (result.value) {
                     Swal.fire({
-                        type: 'error',
-                        title: 'Tambah Data',
-                        text: 'Tambah Data Gagal. Silahkan coba kembali.'
-                    })
-                });
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Batal',
-                    'Batal Migrasi Data',
-                    'error'
-                )
-            }
-        });
+                        title: 'Proses migrasi data..',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        onOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    $.ajax({
+                        url: "${baseUrl}simkeu/migrasi-data?thnAng=" + thnAng + "&lokasi=" + lokasi,
+                        type: "POST",
+                        contentType: "application/json",
+                        dataType: 'json'
+                    }).done(function () {
+                        swalWithBootstrapButtons.fire({
+                            type: 'success',
+                            title: 'Migrasi Data',
+                            text: 'Migrasi Data Berhasil'
+                        });
+                        location.reload();
+                    }).fail(function () {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Tambah Data',
+                            text: 'Tambah Data Gagal. Silahkan coba kembali.'
+                        })
+                    });
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Batal',
+                        'Batal Migrasi Data',
+                        'error'
+                    )
+                }
+            });
+        }
     }
+
 
     const masterTable = $('#MasterTable').DataTable({
         "Dom": 'RlfrtlipB',
@@ -174,51 +219,52 @@
         "scrollX": true,
         "ordering": false,
         "ajax": {
-            "url": "http://localhost:9999/api/simkeu/all-datatable",
+            "url": "${baseUrl}simkeu/all-datatable",
             "type": "POST",
             "data": function (d) {
                 d.thnAng = thnAng;
+                d.lokasi = lokasi;
             }
         },
         "columns": [
             {"data": "thnAng"},
-            {"data": "periode"},
+            // {"data": "periode"},
             {"data": "kdLokasi"},
             {"data": "noSppa"},
             {"data": "kdBrg"},
             {"data": "noAset"},
             {"data": "tglPerlh"},
-            {"data": "tercatat"},
+            // {"data": "tercatat"},
             {"data": "kondisi"},
-            {"data": "tglBuku"},
-            {"data": "jnsTrn"},
-            {"data": "dsrHrg"},
-            {"data": "kdData"},
-            {"data": "flagSap"},
-            {"data": "kuantitas"},
-            {"data": "rphSat"},
-            {"data": "rphAset"},
-            {"data": "flagKor"},
-            {"data": "keterangan"},
-            {"data": "merkType"},
-            {"data": "asalPerlh"},
-            {"data": "noBukti"},
-            {"data": "noDsrMts"},
-            {"data": "tglDsrMts"},
-            {"data": "flagTtp"},
-            {"data": "flagKrm"},
-            {"data": "kdBlu"},
-            {"data": "status"},
-            {"data": "noReg"},
-            {"data": "kdBapel"},
-            {"data": "kdKpknl"},
-            {"data": "umeko"},
-            {"data": "rphRes"},
-            {"data": "kdKppn"},
-            {"data": "versi"},
-            {"data": "kdPerKd"},
-            {"data": "kdPerKk"},
-            {"data": "noAset2"}
+            // {"data": "tglBuku"},
+            // {"data": "jnsTrn"},
+            // {"data": "dsrHrg"},
+            // {"data": "kdData"},
+            // {"data": "flagSap"},
+            // {"data": "kuantitas"},
+            // {"data": "rphSat"},
+            // {"data": "rphAset"},
+            // {"data": "flagKor"},
+            // {"data": "keterangan"},
+            // {"data": "merkType"},
+            // {"data": "asalPerlh"},
+            // {"data": "noBukti"},
+            // {"data": "noDsrMts"},
+            // {"data": "tglDsrMts"},
+            // {"data": "flagTtp"},
+            // {"data": "flagKrm"},
+            // {"data": "kdBlu"},
+            // {"data": "status"},
+            // {"data": "noReg"},
+            // {"data": "kdBapel"},
+            // {"data": "kdKpknl"},
+            // {"data": "umeko"},
+            // {"data": "rphRes"},
+            // {"data": "kdKppn"},
+            // {"data": "versi"},
+            // {"data": "kdPerKd"},
+            // {"data": "kdPerKk"},
+            // {"data": "noAset2"}
         ],
         "columnDefs": [
             {

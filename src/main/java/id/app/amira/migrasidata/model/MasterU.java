@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "t_masteru")
-@IdClass(CompositeId.class)
+@IdClass(MasterUCompositeId.class)
 @Data
 public class MasterU {
 

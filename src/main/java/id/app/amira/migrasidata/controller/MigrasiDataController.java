@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import id.app.amira.migrasidata.model.DatatablesResponse;
 import id.app.amira.migrasidata.service.IMigrasiDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,36 +17,49 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = {"/api","/"})
 public class MigrasiDataController {
+
+    @Value("${baseUrl}")
+    protected String baseUrl;
+
     @Autowired
     IMigrasiDataService service;
 
     @RequestMapping(value = {"/", "/index"})
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("baseUrl", baseUrl);
         return "index";
     }
 
-    @RequestMapping(value = {"/api/simkeu/all-datatable"}, method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = {"simkeu/all-datatable"}, method = RequestMethod.POST, produces = "application/json")
     public void getTopFiveDataSimkeu(
             @RequestParam("draw") int draw,
             @RequestParam("start") int start,
             @RequestParam("length") int length,
             @RequestParam(value = "search[value]", defaultValue = "") String search,
             @RequestParam("thnAng") String thnAng,
+            @RequestParam("lokasi") String lokasi,
             HttpServletResponse response) {
-        DatatablesResponse datatablesResponse = service.getDataTable(draw, start, length, search, thnAng);
+        DatatablesResponse datatablesResponse = service.getDataTable(draw, start, length, search, thnAng, lokasi);
         setJsonResponse(datatablesResponse, response);
     }
 
-    @RequestMapping(value = {"/api/simkeu/get-all-thn-ang"}, produces = "application/json")
+    @RequestMapping(value = {"simkeu/get-all-thn-ang"}, produces = "application/json")
     public void selectTahunAnggaran(HttpServletResponse response) {
         List<String> thnAng = service.selectTahunAnggaran();
         setJsonResponse(thnAng, response);
     }
 
-    @RequestMapping(value = {"/api/simkeu/migrasi-data"}, method = RequestMethod.POST)
-    public void MigrasiData(@RequestParam("thnAng") String thnAng, HttpServletResponse response) {
-        service.migrasiData(thnAng);
+    @RequestMapping(value = {"simkeu/get-all-lokasi"}, produces = "application/json")
+    public void selectLokasi(HttpServletResponse response) {
+        List<String> thnAng = service.selectLokasi();
+        setJsonResponse(thnAng, response);
+    }
+
+    @RequestMapping(value = {"simkeu/migrasi-data"}, method = RequestMethod.POST)
+    public void MigrasiData(@RequestParam("thnAng") String thnAng,@RequestParam("lokasi") String lokasi, HttpServletResponse response) {
+        service.migrasiData(thnAng,lokasi);
         setJsonResponse(0, response);
     }
 
