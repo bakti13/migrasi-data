@@ -18,4 +18,16 @@ public class AmiraRepository {
     @Autowired
     @Getter
     IKpknlAmiraRepository kpknl;
+
+    @Autowired
+    @Getter
+    IKppnAmiraRepository kppn;
+
+    @Autowired
+    @Getter
+    IUpbAmiraRepository upb;
+
+    @Autowired
+    @Getter
+    ISskelAmiraRepository sskel;
 }

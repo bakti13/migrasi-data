@@ -17,4 +17,16 @@ public class SimkeuRepository {
     @Autowired
     @Getter
     IKpknlSimkeuRepository kpknl;
+
+    @Autowired
+    @Getter
+    IKppnSimkeuRepository kppn;
+
+    @Autowired
+    @Getter
+    IUpbSimkeuRepository upb;
+
+    @Autowired
+    @Getter
+    ISskelSimkeuRepository sskel;
 }
