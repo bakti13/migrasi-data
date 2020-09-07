@@ -21,7 +21,8 @@
                         <select class="custom-select col-sm-3" id="ThnAng"></select>
                         <label for="Lokasi" class="col-sm-2 col-form-label font-weight-bold">Lokasi:</label>
                         <select class="custom-select col-sm-3" id="Lokasi"></select>
-                        <button id="Load" type="button" class="float-left btn btn-info" onclick="LoadData()">Load</button>
+                        <button id="Load" type="button" class="float-left btn btn-info" onclick="LoadData()">Load
+                        </button>
                         <button id="btnMigrasiData" type="button" class="float-right btn btn-success"
                                 onclick="migrasiData()">
                             Migrasi Data
@@ -36,43 +37,43 @@
                     <thead>
                     <tr class="bg-success text-white">
                         <th class="text-center">Tahun Anggaran</th>
-<#--                        <th class="text-center">Periode</th>-->
+                        <#--                        <th class="text-center">Periode</th>-->
                         <th class="text-center">Lokasi</th>
                         <th class="text-center">No Sppa</th>
                         <th class="text-center">Kode Barang</th>
                         <th class="text-center">No Aset</th>
                         <th class="text-center">Tanggal Perolehan</th>
-<#--                        <th class="text-center">Tercatat</th>-->
+                        <#--                        <th class="text-center">Tercatat</th>-->
                         <th class="text-center">Kondisi</th>
-<#--                        <th class="text-center">Tangal Buku</th>
-                        <th class="text-center">Jenis Trn</th>
-                        <th class="text-center">Dsr Hrg</th>
-                        <th class="text-center">Kode Data</th>
-                        <th class="text-center">Flag Sap</th>
-                        <th class="text-center">Kuantitas</th>
-                        <th class="text-center">Rph Sat</th>
-                        <th class="text-center">Rph Aset</th>
-                        <th class="text-center">Flag Kor</th>
-                        <th class="text-center">Keterangan</th>
-                        <th class="text-center">Merk Type</th>
-                        <th class="text-center">Asal Perlh</th>
-                        <th class="text-center">No Bukti</th>
-                        <th class="text-center">No Dsr Mts</th>
-                        <th class="text-center">Tanggal Dsr Mts</th>
-                        <th class="text-center">Flag Ttp</th>
-                        <th class="text-center">Flag Krm</th>
-                        <th class="text-center">KdBlu</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Noreg</th>
-                        <th class="text-center">KdBapel</th>
-                        <th class="text-center">KdKpknl</th>
-                        <th class="text-center">Umeko</th>
-                        <th class="text-center">Rph Res</th>
-                        <th class="text-center">Kdkppn</th>
-                        <th class="text-center">Versi</th>
-                        <th class="text-center">KdPerKd</th>
-                        <th class="text-center">KdPerKK</th>
-                        <th class="text-center">no Aset2</th>-->
+                        <#--                        <th class="text-center">Tangal Buku</th>
+                                                <th class="text-center">Jenis Trn</th>
+                                                <th class="text-center">Dsr Hrg</th>
+                                                <th class="text-center">Kode Data</th>
+                                                <th class="text-center">Flag Sap</th>
+                                                <th class="text-center">Kuantitas</th>
+                                                <th class="text-center">Rph Sat</th>
+                                                <th class="text-center">Rph Aset</th>
+                                                <th class="text-center">Flag Kor</th>
+                                                <th class="text-center">Keterangan</th>
+                                                <th class="text-center">Merk Type</th>
+                                                <th class="text-center">Asal Perlh</th>
+                                                <th class="text-center">No Bukti</th>
+                                                <th class="text-center">No Dsr Mts</th>
+                                                <th class="text-center">Tanggal Dsr Mts</th>
+                                                <th class="text-center">Flag Ttp</th>
+                                                <th class="text-center">Flag Krm</th>
+                                                <th class="text-center">KdBlu</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Noreg</th>
+                                                <th class="text-center">KdBapel</th>
+                                                <th class="text-center">KdKpknl</th>
+                                                <th class="text-center">Umeko</th>
+                                                <th class="text-center">Rph Res</th>
+                                                <th class="text-center">Kdkppn</th>
+                                                <th class="text-center">Versi</th>
+                                                <th class="text-center">KdPerKd</th>
+                                                <th class="text-center">KdPerKK</th>
+                                                <th class="text-center">no Aset2</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -106,7 +107,7 @@
     $.get("${baseUrl}simkeu/get-all-lokasi", function (data) {
         let html = '<option value="">All</option>';
         for (let i = 0; i < data.length; i++) {
-            html += '<option value=' + data[i] + '>' + data[i] + '</option>';
+            html += '<option value=' + data[i].kode + '>' + data[i].nama + '</option>';
         }
         // html += '<option value="all">All</option>';
         $('#Lokasi').html(html);
@@ -123,7 +124,6 @@
     }
 
     function validation() {
-        let valid = true;
         /*if(! $('#ThnAng').val() )
         {
             valid = false;
@@ -142,7 +142,7 @@
                 text: 'Lokasi tidak boleh kosong'
             })
         }*/
-        return valid;
+        return true;
     }
 
 

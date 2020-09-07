@@ -51,7 +51,7 @@
     "Bootstrap 4"
   ],
   "license": "MIT",
-  "main": "./js/dataTables.bootstrap4.js",
+  "main": "js/dataTables.bootstrap4.js",
   "name": "datatables.net-bs4",
   "style": "./css/dataTables.bootstrap4.css",
   "version": "1.10.19"

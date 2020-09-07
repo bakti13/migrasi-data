@@ -4,14 +4,18 @@ import id.app.amira.migrasidata.model.MasterUCompositeId;
 import id.app.amira.migrasidata.model.MasterU;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface IAmiraRepository extends JpaRepository<MasterU, MasterUCompositeId> {
+public interface IMasterUAmiraRepository extends JpaRepository<MasterU, MasterUCompositeId> {
     @Query(value = "SELECT * from t_masteru ", nativeQuery = true)
     List<MasterU> getAllData();
+
+    @Procedure(procedureName = "GenerateViewMasterU")
+    int createViewMasterU();
 
     /*@Query(value = "SELECT COUNT(thn_ang) FROM t_masteru WHERE " +
             " thn_ang = :#{#data.thnAng} AND periode = :#{#data.periode} AND kd_lokasi = :#{#data.kdLokasi} AND " +

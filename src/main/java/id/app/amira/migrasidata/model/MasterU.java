@@ -1,5 +1,6 @@
 package id.app.amira.migrasidata.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,7 +53,10 @@ public class MasterU {
     @Setter
     @Getter
     @Column(name = "tgl_perlh")
-    @Temporal(TemporalType.DATE)
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy"
+    )
     private Date tglPerlh;
 
     @Id
@@ -71,7 +75,10 @@ public class MasterU {
     @Setter
     @Getter
     @Column(name = "tgl_buku")
-    @Temporal(TemporalType.DATE)
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy"
+    )
     private Date tglBuku;
 
     @Id
@@ -156,8 +163,7 @@ public class MasterU {
     @Setter
     @Getter
     @Column(name = "tgl_dsr_mts")
-    @Temporal(TemporalType.DATE)
-    private Date tglDsrMts;
+    private String tglDsrMts;
 
     @Id
     @Setter

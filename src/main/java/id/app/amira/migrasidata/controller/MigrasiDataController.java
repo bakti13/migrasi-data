@@ -2,6 +2,7 @@ package id.app.amira.migrasidata.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.app.amira.migrasidata.model.DatatablesResponse;
+import id.app.amira.migrasidata.model.Lokasi;
 import id.app.amira.migrasidata.service.IMigrasiDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +18,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = {"/api","/"})
+@RequestMapping(value = {"/api", "/"})
 public class MigrasiDataController {
 
     @Value("${baseUrl}")
@@ -35,8 +36,8 @@ public class MigrasiDataController {
     @RequestMapping(value = {"simkeu/all-datatable"}, method = RequestMethod.POST, produces = "application/json")
     public void getTopFiveDataSimkeu(
             @RequestParam("draw") int draw,
-            @RequestParam("start") int start,
-            @RequestParam("length") int length,
+            @RequestParam(value = "start", defaultValue = "0") int start,
+            @RequestParam(value = "length", defaultValue = "10") int length,
             @RequestParam(value = "search[value]", defaultValue = "") String search,
             @RequestParam("thnAng") String thnAng,
             @RequestParam("lokasi") String lokasi,
@@ -53,14 +54,21 @@ public class MigrasiDataController {
 
     @RequestMapping(value = {"simkeu/get-all-lokasi"}, produces = "application/json")
     public void selectLokasi(HttpServletResponse response) {
-        List<String> thnAng = service.selectLokasi();
-        setJsonResponse(thnAng, response);
+        List<Lokasi> lokasi = service.selectLokasi();
+        setJsonResponse(lokasi, response);
     }
 
     @RequestMapping(value = {"simkeu/migrasi-data"}, method = RequestMethod.POST)
-    public void MigrasiData(@RequestParam("thnAng") String thnAng,@RequestParam("lokasi") String lokasi, HttpServletResponse response) {
-        service.migrasiData(thnAng,lokasi);
-        setJsonResponse(0, response);
+    public void MigrasiData(@RequestParam("thnAng") String thnAng, @RequestParam("lokasi") String lokasi, HttpServletResponse response) {
+        service.migrasiData(thnAng, lokasi);
+        service.migrasiJenisTransaksi();
+        service.migrasiKpknl();
+        service.migrasiKppn();
+        service.migrasiUpb();
+        service.migrasiSskel();
+
+        setJsonResponse(service.createViewMasterU(), response);
+//        setJsonResponse(0, response);
     }
 
     private void setJsonResponse(Object object, HttpServletResponse response) {

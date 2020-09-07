@@ -1,7 +1,8 @@
 package id.app.amira.migrasidata.repo.simkeu;
 
-import id.app.amira.migrasidata.model.MasterUCompositeId;
+import id.app.amira.migrasidata.model.Lokasi;
 import id.app.amira.migrasidata.model.MasterU;
+import id.app.amira.migrasidata.model.MasterUCompositeId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 
-public interface ISimkeuRepository extends JpaRepository<MasterU, MasterUCompositeId> {
+public interface IMasterUSimkeuRepository extends JpaRepository<MasterU, MasterUCompositeId> {
 
     @Query(value = "SELECT * FROM t_masteru WHERE IF(:thn = '', TRUE, thn_ang = :thn) AND IF(:lok = '', TRUE, kd_lokasi = :lok) LIMIT :start, :length",
             nativeQuery = true)
@@ -19,8 +20,9 @@ public interface ISimkeuRepository extends JpaRepository<MasterU, MasterUComposi
     @Query(value = "select distinct thn_ang from t_masteru order by thn_ang", nativeQuery = true)
     List<String> getAllThnAng();
 
-    @Query(value = "select distinct kd_lokasi from t_masteru order by kd_lokasi", nativeQuery = true)
-    List<String> getAllLokasi();
+//    @Query(value = "select distinct kd_lokasi from t_masteru order by kd_lokasi", nativeQuery = true)
+    @Query(value = "SELECT l.nama, t.kd_lokasi as kode FROM login l INNER JOIN t_masteru t ON (l.kdlok = t.kd_lokasi) GROUP BY l.nama ORDER BY l.nama", nativeQuery = true)
+    List<Lokasi> getAllLokasi();
 
     @Query(value = "SELECT count(*) FROM t_masteru WHERE IF(:thn = '', TRUE, thn_ang = :thn) AND IF(:lok = '', TRUE, kd_lokasi = :lok)",
             nativeQuery = true)
