@@ -215,7 +215,7 @@
         "processing": true,
         "serverSide": true,
         "lengthMenu": [10, 50, 100, 250, 500, 1000],
-        "bFilter": false,
+        "bFilter": true,
         "scrollX": true,
         "ordering": false,
         "ajax": {
@@ -227,13 +227,13 @@
             }
         },
         "columns": [
-            {"data": "thnAng"},
+            {"data": "thnAnggaran"},
             // {"data": "periode"},
-            {"data": "kdLokasi"},
+            {"data": "lokasi"},
             {"data": "noSppa"},
-            {"data": "kdBrg"},
+            {"data": "kdBarang"},
             {"data": "noAset"},
-            {"data": "tglPerlh"},
+            {"data": "tglPeroleh"},
             // {"data": "tercatat"},
             {"data": "kondisi"},
             // {"data": "tglBuku"},
@@ -266,13 +266,13 @@
             // {"data": "kdPerKk"},
             // {"data": "noAset2"}
         ],
-        "columnDefs": [
-            {
-                // "searchable": false,
-                "orderable": false,
-                "targets": 0
-            }
-        ],
+        // "columnDefs": [
+        //     {
+        //         // "searchable": false,
+        //         "orderable": false,
+        //         "targets": 0
+        //     }
+        // ],
         language: {
             "decimal": "",
             "emptyTable": "Tidak ada data yang ditemukan",

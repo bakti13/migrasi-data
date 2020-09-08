@@ -163,7 +163,11 @@ public class MasterU {
     @Setter
     @Getter
     @Column(name = "tgl_dsr_mts")
-    private String tglDsrMts;
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy"
+    )
+    private Date tglDsrMts;
 
     @Id
     @Setter

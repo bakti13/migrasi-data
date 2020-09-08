@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class MigrasiDataService implements IMigrasiDataService {
 
-    private final static int LENGTH = 1000;
+    private final static int LENGTH = 1500;
 
     @Autowired
     SimkeuRepository simkeuRepo;
@@ -128,7 +128,9 @@ public class MigrasiDataService implements IMigrasiDataService {
 
     @Override
     public DatatablesResponse getDataTable(int draw, int start, int length, String search, String thnAng, String lokasi) {
-        List<MasterU> list = simkeuRepo.getMasterU().getDataByParameter(start, length, thnAng, lokasi);
+//        List<MasterU> list = simkeuRepo.getMasterU().getDataByParameter(start, length, thnAng, lokasi);
+        List<MasterUDatatables> list = simkeuRepo.getMasterU().getDataTableByParameter(start, length, thnAng, lokasi, search);
+        System.out.println("cari: "+search);
         int total = simkeuRepo.getMasterU().getTotalData(thnAng,lokasi);
         return DatatablesResponse.builder().draw(draw).data(list).recordsFiltered(total)
                 .recordsTotal(total).build();

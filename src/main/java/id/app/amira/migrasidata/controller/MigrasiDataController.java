@@ -34,7 +34,7 @@ public class MigrasiDataController {
     }
 
     @RequestMapping(value = {"simkeu/all-datatable"}, method = RequestMethod.POST, produces = "application/json")
-    public void getTopFiveDataSimkeu(
+    public void getDataTables(
             @RequestParam("draw") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
             @RequestParam(value = "length", defaultValue = "10") int length,
