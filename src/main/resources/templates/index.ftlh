@@ -8,6 +8,18 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <style>
+        img {
+            /*border: 1px solid #ddd;*/
+            /*border-radius: 4px;*/
+            padding: 5px;
+            width: 200px;
+        }
+        /*button {*/
+        /*    height:10px;*/
+        /*    !*width:200px;*!*/
+        /*}*/
+    </style>
 </head>
 
 <body style="background-color: #6c757d">
@@ -16,11 +28,12 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md">
+                    <img src="images/bkkbn-logo.png">
                     <div class="row">
-                        <label for="ThnAng" class="col-sm-2 col-form-label font-weight-bold">Tahun Anggaran:</label>
-                        <select class="custom-select col-sm-3" id="ThnAng"></select>
-                        <label for="Lokasi" class="col-sm-2 col-form-label font-weight-bold">Lokasi:</label>
-                        <select class="custom-select col-sm-3" id="Lokasi"></select>
+                        <label for="ThnAng" class="col-sm col-form-label font-weight-bold">Tahun Anggaran:</label>
+                        <select class="custom-select col-sm" id="ThnAng"></select>
+                        <label for="Lokasi" class="col-sm col-form-label font-weight-bold">Lokasi:</label>
+                        <select class="custom-select col-sm" id="Lokasi"></select>
                         <button id="Load" type="button" class="float-left btn btn-info" onclick="LoadData()">Load
                         </button>
                         <button id="btnMigrasiData" type="button" class="float-right btn btn-success"
@@ -36,15 +49,15 @@
                 <table id="MasterTable" class="table table-bordered table-striped">
                     <thead>
                     <tr class="bg-success text-white">
-                        <th class="text-center">Tahun Anggaran</th>
+                        <th class="text-center" style="width: 100px">Tahun Anggaran</th>
                         <#--                        <th class="text-center">Periode</th>-->
-                        <th class="text-center">Lokasi</th>
-                        <th class="text-center">No Sppa</th>
-                        <th class="text-center">Kode Barang</th>
-                        <th class="text-center">No Aset</th>
-                        <th class="text-center">Tanggal Perolehan</th>
+                        <th class="text-center" style="width: 200px">Lokasi</th>
+                        <th class="text-center" style="width: 100px">No Sppa</th>
+                        <th class="text-center" style="width: 100px">Kode Barang</th>
+                        <th class="text-center" style="width: 80px">No Aset</th>
+                        <th class="text-center" style="width: 100px">Tanggal Perolehan</th>
                         <#--                        <th class="text-center">Tercatat</th>-->
-                        <th class="text-center">Kondisi</th>
+                        <th class="text-center" style="width: 80px">Kondisi</th>
                         <#--                        <th class="text-center">Tangal Buku</th>
                                                 <th class="text-center">Jenis Trn</th>
                                                 <th class="text-center">Dsr Hrg</th>
@@ -93,8 +106,8 @@
 
 <script>
 
-    let thnAng = "-";
-    let lokasi = "-";
+    let thnAng = "";
+    let lokasi = "";
     $.get("${baseUrl}simkeu/get-all-thn-ang", function (data) {
         let html = '<option value="">All</option>';
         for (let i = 0; i < data.length; i++) {
@@ -216,7 +229,7 @@
         "serverSide": true,
         "lengthMenu": [10, 50, 100, 250, 500, 1000],
         "bFilter": true,
-        "scrollX": true,
+        // "scrollX": true,
         "ordering": false,
         "ajax": {
             "url": "${baseUrl}simkeu/all-datatable",

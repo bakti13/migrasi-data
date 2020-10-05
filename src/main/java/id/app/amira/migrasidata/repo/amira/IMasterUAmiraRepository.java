@@ -14,7 +14,7 @@ public interface IMasterUAmiraRepository extends JpaRepository<MasterU, MasterUC
     @Query(value = "SELECT * from t_masteru ", nativeQuery = true)
     List<MasterU> getAllData();
 
-    @Procedure(procedureName = "GenerateViewMasterU")
+    @Procedure(procedureName = "GenerateViewMaster")
     int createViewMasterU();
 
     /*@Query(value = "SELECT COUNT(thn_ang) FROM t_masteru WHERE " +
