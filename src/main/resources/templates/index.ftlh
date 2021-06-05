@@ -228,7 +228,7 @@
         "processing": true,
         "serverSide": true,
         "lengthMenu": [10, 50, 100, 250, 500, 1000],
-        "bFilter": true,
+        "bFilter": false,
         // "scrollX": true,
         "ordering": false,
         "ajax": {

@@ -61,11 +61,11 @@ public class MigrasiDataController {
     @RequestMapping(value = {"simkeu/migrasi-data"}, method = RequestMethod.POST)
     public void MigrasiData(@RequestParam("thnAng") String thnAng, @RequestParam("lokasi") String lokasi, HttpServletResponse response) {
         service.migrasiData(thnAng, lokasi);
-        service.migrasiJenisTransaksi();
-        service.migrasiKpknl();
-        service.migrasiKppn();
-        service.migrasiUpb();
-        service.migrasiSskel();
+//        service.migrasiJenisTransaksi();
+//        service.migrasiKpknl();
+//        service.migrasiKppn();
+//        service.migrasiUpb();
+//        service.migrasiSskel();
 
         setJsonResponse(service.createViewMasterU(), response);
 //        setJsonResponse(0, response);
